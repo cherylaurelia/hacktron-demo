@@ -12,6 +12,8 @@ export interface Run {
   headline: string;
   counts: string;
   watched: string[];
+  // First `::error::` line hfw_report.py printed (the job annotation); empty when none.
+  annotation: string;
 }
 
 export type CheckOutcome = "passes" | "blocked" | "error";

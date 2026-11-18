@@ -12,11 +12,10 @@ free GitHub Action that checks packages a PR adds against Hacktron's malware ver
 2. **npm aliases are checked under the alias name.** `http-client@npm:axios@1.14.1` was looked
    up as `http-client@1.14.1` (clean); plain `axios@1.14.1` is blocked.
 
-The fix ([branch](https://github.com/cherylaurelia/dependency-scan/compare/main...fix/fail-closed-no-verdict),
-2 commits): a lookup with no verdict ends the run in `ERROR` (README's contract) and the comment
-says so. Optional follow-ups ([branch](https://github.com/cherylaurelia/dependency-scan/compare/main...fix/fail-closed-throttle-and-aliases),
-4 commits): retry 429s after the server's `retry-after-*` window, and use the lockfile's `name`
-for aliases. With them, the same PRs are blocked.
+The fix ([branch](https://github.com/cherylaurelia/dependency-scan/compare/main...fix/fail-closed-throttled-verdicts),
+2 commits): a lookup with no verdict ends the run in `ERROR` (the README's contract), and 429s
+are retried after the server's `retry-after-*` window, so the same PR is blocked. The alias fix
+is a separate [follow-up commit](https://github.com/cherylaurelia/dependency-scan/compare/fix/fail-closed-throttled-verdicts...fix/follow-up-npm-alias-names).
 
 ## Run
 

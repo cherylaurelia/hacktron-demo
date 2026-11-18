@@ -5,11 +5,11 @@ const RUNS = "../runs";
 
 const runs = {
   throttleBefore: { dir: "next-debug-before2", code: "main (abdf725)" },
-  throttleFailClosed: { dir: "v2-small-failclosed", code: "PR branch (2 commits)" },
-  throttleAfter: { dir: "v2-full-after", code: "PR + follow-ups (4 commits)" },
+  throttleFailClosed: { dir: "v3-failclosed-alone", code: "first commit alone" },
+  throttleAfter: { dir: "v3-pr", code: "fail closed + retry (2 commits)" },
   aliasBefore: { dir: "r1", log: "alias.log", comment: "alias.comment.md", code: "main (abdf725)" },
   aliasControl: { dir: "r1", log: "direct.log", comment: "direct.comment.md", code: "main (abdf725)" },
-  aliasAfter: { dir: "v2-alias-after", code: "PR + follow-ups (4 commits)" },
+  aliasAfter: { dir: "v3-alias", code: "+ alias follow-up" },
 };
 
 const out = {};
@@ -40,6 +40,7 @@ for (const [key, spec] of Object.entries(runs)) {
     headline: headline.replaceAll("**", ""),
     counts: counts.replaceAll("**", "").replace(/^- /, ""),
     watched,
+    annotation: (log.split("\n").find((l) => l.startsWith("::error::")) ?? "").slice(0, 160),
   };
 }
 

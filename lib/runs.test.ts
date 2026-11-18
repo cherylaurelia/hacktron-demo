@@ -6,7 +6,7 @@ import { checkOutcome, parseRuns, throttled, type Run } from "./runs.ts";
 const runs = parseRuns(readFileSync(new URL("../data/runs.json", import.meta.url), "utf8"));
 
 function run(malicious: number, exitCode: number): Run {
-  return { code: "x", malicious, errors: 0, lookups: 1, http: null, exitCode, seconds: null, headline: "", counts: "", watched: [] };
+  return { code: "x", malicious, errors: 0, lookups: 1, http: null, exitCode, seconds: null, headline: "", counts: "", watched: [], annotation: "" };
 }
 
 test("check outcome follows action.yml: non-zero exit is ERROR, then malicious blocks", () => {

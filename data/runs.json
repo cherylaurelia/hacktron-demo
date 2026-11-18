@@ -14,27 +14,30 @@
     "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 60 · unknown: 372",
     "watched": [
       "unknown     debug@4.4.2  (None)"
-    ]
+    ],
+    "annotation": ""
   },
   "throttleFailClosed": {
-    "code": "PR branch (2 commits)",
+    "code": "first commit alone",
     "malicious": 0,
-    "errors": 372,
+    "errors": 328,
     "lookups": 432,
     "http": {
-      "200": 60,
-      "429": 372
+      "200": 104,
+      "429": 325,
+      "-1": 3
     },
     "exitCode": 3,
-    "seconds": 37.2,
-    "headline": "Error — no verdict for 372 of 432 new/changed dependencies; this check failed.",
-    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 60 · unknown: 372",
+    "seconds": 71.8,
+    "headline": "All 432 new/changed dependencies look clean.",
+    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 104 · unknown: 328",
     "watched": [
       "unknown     debug@4.4.2  (error: http error 429)"
-    ]
+    ],
+    "annotation": "::error::Hacktron could not get verdicts for 328 package(s). First error: [root] @babel/template@7.29.7 -> http error 429"
   },
   "throttleAfter": {
-    "code": "PR + follow-ups (4 commits)",
+    "code": "fail closed + retry (2 commits)",
     "malicious": 1,
     "errors": 0,
     "lookups": 432,
@@ -42,12 +45,13 @@
       "200": 432
     },
     "exitCode": 0,
-    "seconds": 276.7,
+    "seconds": 272.2,
     "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
     "counts": "added or changed: 432 · malicious: 1 · suspicious: 0 · clean: 431 · unknown: 0",
     "watched": [
       "malicious   debug@4.4.2  (ready)"
-    ]
+    ],
+    "annotation": ""
   },
   "aliasBefore": {
     "code": "main (abdf725)",
@@ -61,7 +65,8 @@
     "counts": "added or changed: 23 · malicious: 0 · suspicious: 0 · clean: 20 · unknown: 3",
     "watched": [
       "clean       http-client@1.14.1  (ready)"
-    ]
+    ],
+    "annotation": ""
   },
   "aliasControl": {
     "code": "main (abdf725)",
@@ -75,10 +80,11 @@
     "counts": "added or changed: 23 · malicious: 1 · suspicious: 0 · clean: 19 · unknown: 3",
     "watched": [
       "malicious   axios@1.14.1  (ready)"
-    ]
+    ],
+    "annotation": ""
   },
   "aliasAfter": {
-    "code": "PR + follow-ups (4 commits)",
+    "code": "+ alias follow-up",
     "malicious": 1,
     "errors": 0,
     "lookups": 23,
@@ -86,11 +92,12 @@
       "200": 23
     },
     "exitCode": 0,
-    "seconds": 14.6,
+    "seconds": 13.5,
     "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
     "counts": "added or changed: 23 · malicious: 1 · suspicious: 0 · clean: 22 · unknown: 0",
     "watched": [
       "malicious   axios@1.14.1  (ready)"
-    ]
+    ],
+    "annotation": ""
   }
 }
