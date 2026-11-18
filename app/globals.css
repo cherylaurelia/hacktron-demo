@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Colors and font from hacktron.ai's stylesheet (light theme). */
+@theme {
+  --color-bg: oklch(94% 0.01 75);
+  --color-card: oklch(97.9% 0.005 75);
+  --color-raised: oklch(99.2% 0.003 75);
+  --color-ink: oklch(25.5% 0.055 305);
+  --color-muted: oklch(47.5% 0.04 305);
+  --color-line: oklch(86% 0.012 75);
+  --color-accent: oklch(55% 0.2 29);
+  --color-red: #a74541;
+  --color-ok: oklch(45% 0.09 150);
+  --color-banner: #2b1d3c;
+  --font-sans: var(--font-recursive), Georgia, serif;
+  --font-mono: var(--font-recursive), ui-monospace, Menlo, monospace;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.mono {
+  font-variation-settings: "MONO" 1;
+}
+
+a {
+  text-underline-offset: 3px;
+}

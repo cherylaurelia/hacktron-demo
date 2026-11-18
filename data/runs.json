@@ -1,0 +1,96 @@
+{
+  "throttleBefore": {
+    "code": "main (abdf725)",
+    "malicious": 0,
+    "errors": 0,
+    "lookups": 432,
+    "http": {
+      "200": 60,
+      "429": 372
+    },
+    "exitCode": 0,
+    "seconds": 36,
+    "headline": "All 432 new/changed dependencies look clean.",
+    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 60 · unknown: 372",
+    "watched": [
+      "unknown     debug@4.4.2  (None)"
+    ]
+  },
+  "throttleFailClosed": {
+    "code": "commit 1 only",
+    "malicious": 0,
+    "errors": 352,
+    "lookups": 432,
+    "http": {
+      "200": 80,
+      "429": 352
+    },
+    "exitCode": 3,
+    "seconds": 39.5,
+    "headline": "All 432 new/changed dependencies look clean.",
+    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 80 · unknown: 352",
+    "watched": [
+      "unknown     debug@4.4.2  (error: http error 429)"
+    ]
+  },
+  "throttleAfter": {
+    "code": "all 3 commits",
+    "malicious": 1,
+    "errors": 0,
+    "lookups": 432,
+    "http": {
+      "200": 432
+    },
+    "exitCode": 0,
+    "seconds": 269,
+    "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
+    "counts": "added or changed: 432 · malicious: 1 · suspicious: 0 · clean: 431 · unknown: 0",
+    "watched": [
+      "malicious   debug@4.4.2  (ready)"
+    ]
+  },
+  "aliasBefore": {
+    "code": "main (abdf725)",
+    "malicious": 0,
+    "errors": 0,
+    "lookups": 23,
+    "http": null,
+    "exitCode": 0,
+    "seconds": null,
+    "headline": "All 23 new/changed dependencies look clean.",
+    "counts": "added or changed: 23 · malicious: 0 · suspicious: 0 · clean: 20 · unknown: 3",
+    "watched": [
+      "clean       http-client@1.14.1  (ready)"
+    ]
+  },
+  "aliasControl": {
+    "code": "main (abdf725)",
+    "malicious": 1,
+    "errors": 0,
+    "lookups": 23,
+    "http": null,
+    "exitCode": 0,
+    "seconds": null,
+    "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
+    "counts": "added or changed: 23 · malicious: 1 · suspicious: 0 · clean: 19 · unknown: 3",
+    "watched": [
+      "malicious   axios@1.14.1  (ready)"
+    ]
+  },
+  "aliasAfter": {
+    "code": "all 3 commits",
+    "malicious": 1,
+    "errors": 0,
+    "lookups": 23,
+    "http": {
+      "200": 23
+    },
+    "exitCode": 0,
+    "seconds": 13.3,
+    "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
+    "counts": "added or changed: 23 · malicious: 1 · suspicious: 0 · clean: 22 · unknown: 0",
+    "watched": [
+      "malicious   axios@1.14.1  (ready)"
+    ]
+  }
+}
