@@ -5,11 +5,11 @@ const RUNS = "../runs";
 
 const runs = {
   throttleBefore: { dir: "next-debug-before2", code: "main (abdf725)" },
-  throttleFailClosed: { dir: "next-debug-failclosed-only", code: "commit 1 only" },
-  throttleAfter: { dir: "next-debug-after", code: "all 3 commits" },
+  throttleFailClosed: { dir: "v2-small-failclosed", code: "PR branch (2 commits)" },
+  throttleAfter: { dir: "v2-full-after", code: "PR + follow-ups (4 commits)" },
   aliasBefore: { dir: "r1", log: "alias.log", comment: "alias.comment.md", code: "main (abdf725)" },
   aliasControl: { dir: "r1", log: "direct.log", comment: "direct.comment.md", code: "main (abdf725)" },
-  aliasAfter: { dir: "alias-after", code: "all 3 commits" },
+  aliasAfter: { dir: "v2-alias-after", code: "PR + follow-ups (4 commits)" },
 };
 
 const out = {};
@@ -20,7 +20,7 @@ for (const [key, spec] of Object.entries(runs)) {
   const wrote = log.match(/malicious=(\d+), suspicious=\d+, errors=(\d+), diff=(\d+)/);
   const status = log.match(/STATUS_COUNTS (\{.*?\}) rc (\d+) secs ([\d.]+)/);
   const lines = comment.split("\n");
-  const headline = lines.find((l) => l.startsWith("All ") || l.startsWith("**Blocking"));
+  const headline = lines.find((l) => /^(All |\*\*Blocking|\*\*Error)/.test(l));
   const counts = lines.find((l) => l.startsWith("- added or changed"));
 
   const watched = log

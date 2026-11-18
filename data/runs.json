@@ -17,24 +17,24 @@
     ]
   },
   "throttleFailClosed": {
-    "code": "commit 1 only",
+    "code": "PR branch (2 commits)",
     "malicious": 0,
-    "errors": 352,
+    "errors": 372,
     "lookups": 432,
     "http": {
-      "200": 80,
-      "429": 352
+      "200": 60,
+      "429": 372
     },
     "exitCode": 3,
-    "seconds": 39.5,
-    "headline": "All 432 new/changed dependencies look clean.",
-    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 80 · unknown: 352",
+    "seconds": 37.2,
+    "headline": "Error — no verdict for 372 of 432 new/changed dependencies; this check failed.",
+    "counts": "added or changed: 432 · malicious: 0 · suspicious: 0 · clean: 60 · unknown: 372",
     "watched": [
       "unknown     debug@4.4.2  (error: http error 429)"
     ]
   },
   "throttleAfter": {
-    "code": "all 3 commits",
+    "code": "PR + follow-ups (4 commits)",
     "malicious": 1,
     "errors": 0,
     "lookups": 432,
@@ -42,7 +42,7 @@
       "200": 432
     },
     "exitCode": 0,
-    "seconds": 269,
+    "seconds": 276.7,
     "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
     "counts": "added or changed: 432 · malicious: 1 · suspicious: 0 · clean: 431 · unknown: 0",
     "watched": [
@@ -78,7 +78,7 @@
     ]
   },
   "aliasAfter": {
-    "code": "all 3 commits",
+    "code": "PR + follow-ups (4 commits)",
     "malicious": 1,
     "errors": 0,
     "lookups": 23,
@@ -86,7 +86,7 @@
       "200": 23
     },
     "exitCode": 0,
-    "seconds": 13.3,
+    "seconds": 14.6,
     "headline": "Blocking — 1 malicious package(s) introduced by this PR.",
     "counts": "added or changed: 23 · malicious: 1 · suspicious: 0 · clean: 22 · unknown: 0",
     "watched": [

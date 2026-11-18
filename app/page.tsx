@@ -6,7 +6,10 @@ const runs = parseRuns(readFileSync(join(process.cwd(), "data/runs.json"), "utf8
 
 const REPO = "https://github.com/HacktronAI/dependency-scan";
 
-const BRANCH =
+const PR_BRANCH =
+  "https://github.com/cherylaurelia/dependency-scan/compare/main...fix/fail-closed-no-verdict";
+
+const FULL_BRANCH =
   "https://github.com/cherylaurelia/dependency-scan/compare/main...fix/fail-closed-throttle-and-aliases";
 
 const DEMO_REPO = "https://github.com/cherylaurelia/hacktron-demo";
@@ -42,7 +45,9 @@ function RunCard({ title, run, note }: { title: string; run: Run; note: string }
       <dl className="mono mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
         <dt className="text-muted">HTTP 429 responses</dt>
         <dd>{limited}</dd>
-        <dt className="text-muted">exit code</dt>
+        <dt className="text-muted">malicious_count</dt>
+        <dd>{run.malicious}</dd>
+        <dt className="text-muted">report step exit</dt>
         <dd>{run.exitCode}</dd>
         {run.seconds === null ? null : (
           <>
@@ -91,15 +96,18 @@ export default function Page() {
           calls that version malicious.
         </p>
         <p className="mt-3 max-w-3xl text-lg leading-relaxed">
-          <strong>Fix:</strong> a missing verdict ends the run in <span className="mono">ERROR</span>, as the README
-          says; 429s are retried after the server&rsquo;s retry-after window; npm aliases are looked up by their
-          real name. With the patch the same PR is blocked.
+          <strong>Fix:</strong> a lookup with no verdict ends the run in <span className="mono">ERROR</span>, as the
+          README says (one line, plus a comment that says so). Optional follow-ups retry the 429s and look up npm
+          aliases by their real name; with them the same PR is blocked.
         </p>
         <div className="mt-7 flex flex-wrap gap-3 text-sm">
-          <a className="rounded-full bg-ink px-4 py-2 text-raised hover:opacity-90" href={BRANCH}>
-            Patch on a fork branch [3 commits]
+          <a className="rounded-full bg-ink px-4 py-2 text-raised hover:opacity-90" href={PR_BRANCH}>
+            Fix branch [2 commits]
           </a>
-          <a className="rounded-full border border-ink px-4 py-2 hover:bg-raised" href={DEMO_REPO}>
+          <a className="rounded-full border border-ink px-4 py-2 hover:bg-raised" href={FULL_BRANCH}>
+            With follow-ups [4 commits]
+          </a>
+          <a className="rounded-full border border-line px-4 py-2 hover:bg-raised" href={DEMO_REPO}>
             Demo repo + repro files
           </a>
           <a className="rounded-full border border-line px-4 py-2 hover:bg-raised" href={REPO}>
@@ -112,17 +120,20 @@ export default function Page() {
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
             A PR that adds the lockfile of a fresh Next.js 15 app ({before.lookups} packages, the shape of a first
             adoption or a lockfile regeneration), with the top-level <span className="mono">debug</span> at 4.4.2, the
-            version compromised in September 2025. Same file, same live API, default HFW_PARALLEL=4.
+            version compromised in September 2025. Same file, same live API, default HFW_PARALLEL=4. The report step
+            exits 0 when it got verdicts; action.yml&rsquo;s last step then fails the job if{" "}
+            <span className="mono">malicious_count</span> is above 0, and a non-zero exit is the README&rsquo;s{" "}
+            <span className="mono">ERROR</span>.
           </p>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             <RunCard title="Before: main" run={before} note="debug@4.4.2 got a 429 and was listed as unknown." />
             <RunCard
-              title="Commit 1 only (one line)"
+              title="The fix (2 commits)"
               run={runs.throttleFailClosed}
-              note="Closes the hole on its own: a lookup without a verdict is an error, so the job fails with ERROR. The comment headline is untouched."
+              note="Closes the hole on its own: a lookup without a verdict is an error, the job ends in ERROR and the comment says why."
             />
             <RunCard
-              title="All 3 commits"
+              title="With the follow-ups"
               run={after}
               note={`Every lookup got a verdict after retries; ${after.seconds ?? 0} s for ${after.lookups} packages.`}
             />
@@ -155,7 +166,7 @@ export default function Page() {
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             <RunCard title="Before: aliased axios@1.14.1" run={runs.aliasBefore} note="Looked up as http-client: clean." />
             <RunCard title="Control: plain axios@1.14.1" run={runs.aliasControl} note="Same version, no alias: blocked." />
-            <RunCard title="After: aliased axios@1.14.1" run={runs.aliasAfter} note="Looked up as axios: blocked." />
+            <RunCard title="With the follow-ups" run={runs.aliasAfter} note="Looked up as axios: blocked." />
           </div>
           <Code>{`# parse_package_lock_json(): the same rule hacktron.ai/tools/package already uses
 #   (t.name ?? key.split("node_modules/").at(-1))
@@ -172,44 +183,35 @@ export default function Page() {
           <h2 className="text-xl font-semibold">The patch</h2>
           <ul className="mt-3 max-w-3xl list-disc space-y-2 pl-5 text-sm leading-relaxed">
             <li>
-              Three commits in <span className="mono">scripts/hfw_report.py</span>, take any subset:{" "}
-              <span className="mono">fix: fail the scan when the verdict API returns no verdict</span> (one line),{" "}
-              <span className="mono">fix: look up npm aliases by their registry name</span>,{" "}
-              <span className="mono">fix: retry verdict lookups the API rate-limited</span> (at most 6 retries per
-              lookup, waiting the longest <span className="mono">retry-after-*</span> header, clamped to 1–60 s).
+              <strong>The fix</strong> (<a className="underline" href={PR_BRANCH}>branch</a>, 2 commits, ready as a
+              PR): the one-line <span className="mono">probe()</span> change above, and the comment says &ldquo;no
+              verdict for N of M&rdquo; instead of &ldquo;look clean&rdquo; on an ERROR run. Unknown and private
+              packages are unaffected: the API answers them with <span className="mono">200 status: ready</span>.
             </li>
             <li>
-              9 new tests (114 pass on Python 3.11, 3.12, 3.13); each fails on main. All 11 hand-made mutants of the
-              changed lines are caught. ruff format and ruff check clean.
+              <strong>Optional follow-ups</strong> (<a className="underline" href={FULL_BRANCH}>branch</a>): retry a
+              429 after the longest <span className="mono">retry-after-*</span> header (1–60 s), at most{" "}
+              <span className="mono">HFW_RATE_LIMIT_RETRIES</span> times (default 6); and the alias lookup. Without the
+              retry, PRs over ~100 packages end in ERROR. With it, run time follows the API&rsquo;s ~100 lookups a
+              minute: {after.lookups} packages took {after.seconds ?? 0} s; a lookup that stays throttled gives up after
+              6 waits and fails the run.
             </li>
             <li>
-              Worst case for the retry: 6 waits of up to 60 s per lookup. Measured: {after.lookups} packages in{" "}
-              {after.seconds ?? 0} s at the default parallelism. Without the retry commit, large PRs end in ERROR
-              instead of passing.
+              Each new test fails on main; every hand-made mutant of the changed lines is caught; tests pass on Python
+              3.11–3.13. Nothing has been opened as a PR.
             </li>
-            <li>The fix is ready on a fork branch and has not been opened as a PR.</li>
           </ul>
         </section>
 
         <section className="mt-14">
           <h2 className="text-xl font-semibold">How this was tested</h2>
-          <ul className="mt-3 max-w-3xl list-disc space-y-2 pl-5 text-sm leading-relaxed">
-            <li>
-              Hacktron&rsquo;s unmodified <span className="mono">hfw_report.py</span> (v1.0.0, abdf725), run with the
-              environment <span className="mono">action.yml</span> sets (fast mode, empty base = the PR adds the
-              lockfile), against the API URL the Action calls by default (api-staging.hacktron.ai/v1/hfw), on
-              2026-11-18.
-            </li>
-            <li>
-              Lockfiles made with <span className="mono">npm install --package-lock-only --ignore-scripts</span>; the
-              bad versions were then written into the JSON. Nothing was installed.
-            </li>
-            <li>
-              About 2,400 verdict lookups in total across 9 runs, each run started at least 60 s after the last. Rate
-              limits seen in the headers: 10/s, 20/10 s, 100/min.
-            </li>
-            <li>Lockfiles and the counting wrapper are in the demo repo&rsquo;s repro/ folder.</li>
-          </ul>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed">
+            Hacktron&rsquo;s unmodified <span className="mono">hfw_report.py</span> (v1.0.0) with the env{" "}
+            <span className="mono">action.yml</span> sets, against the API URL it calls by default
+            (api-staging.hacktron.ai/v1/hfw), on 2026-11-18: about 3,500 lookups across 15 runs, at least 60 s apart.
+            Lockfiles were made with <span className="mono">npm --package-lock-only</span>; nothing was installed.
+            They are in the demo repo&rsquo;s repro/ folder.
+          </p>
         </section>
       </main>
       <footer className="border-t border-line px-5 py-6 text-center text-xs text-muted">
