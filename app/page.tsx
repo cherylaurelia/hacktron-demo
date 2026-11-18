@@ -15,7 +15,7 @@ const ALIAS_BRANCH =
 const DEMO_REPO = "https://github.com/cherylaurelia/hacktron-demo";
 
 const OUTCOME_TEXT: Record<CheckOutcome, string> = {
-  passes: "check passes",
+  passes: "check passes (wrongly)",
   blocked: "check fails: blocked",
   error: "check fails: ERROR",
 };
@@ -138,7 +138,7 @@ export default function Page() {
             <RunCard
               title="First commit alone (one line)"
               run={runs.throttleFailClosed}
-              note="Closes the hole, but every PR over ~100 packages would now fail, which is why the retry is in the same PR."
+              note="A separate run (325 × 429, 3 connection errors). Closes the hole, but every PR over ~100 packages would now fail, which is why the retry is in the same PR."
             />
             <RunCard
               title="The fix: fail closed + retry"
@@ -208,10 +208,7 @@ export default function Page() {
               API&rsquo;s ~100 lookups a minute ({after.lookups} packages: {after.seconds ?? 0} s); a lookup still
               throttled after 6 waits fails the run.
             </li>
-            <li>
-              Unknown and private packages are unaffected: the API answers them with{" "}
-              <span className="mono">200 status: ready</span>. A run that ends in ERROR still posts no comment, as today.
-            </li>
+            <li>A run that ends in ERROR still posts no comment, as today.</li>
             <li>
               Each new test fails on main; every hand-made mutant of the changed lines is caught; tests pass on Python
               3.11–3.13 and on the fork&rsquo;s CI. Nothing has been opened as a PR.
